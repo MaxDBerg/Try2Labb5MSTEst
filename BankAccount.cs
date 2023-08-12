@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace KiwiBankomaten
 {
-    internal class BankAccount
+    public class BankAccount
     {
         private int _accountNumber;
         private string _accountName;
@@ -22,6 +22,16 @@ namespace KiwiBankomaten
         private static int AccountNumberCounter = 40448653;
         
         // For testing, to give value to accounts.
+        public BankAccount(string _accountName, decimal _value, string _currency,
+            decimal _interest, int _accountNumber)
+        {
+            this._accountName = _accountName;
+            this._amount = _value;
+            this._currency = _currency;
+            this._interest = _interest;
+            this._accountNumber = _accountNumber;
+        }
+
         public BankAccount(string _accountName, decimal _value, string _currency,
             decimal _interest)
         {

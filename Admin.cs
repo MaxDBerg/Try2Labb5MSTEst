@@ -6,7 +6,7 @@ using System.Xml.Linq;
 
 namespace KiwiBankomaten
 {
-    internal class Admin : User
+    public class Admin : User
     {
         // Use this when creating admins in program.
         public Admin(string username, string password)

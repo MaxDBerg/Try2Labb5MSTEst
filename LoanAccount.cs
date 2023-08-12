@@ -2,7 +2,7 @@
 
 namespace KiwiBankomaten
 {
-    internal class LoanAccount : BankAccount
+    public class LoanAccount : BankAccount
     {
 
         private static int LoanNumberCounter = 41443033;

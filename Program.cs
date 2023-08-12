@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace KiwiBankomaten
 {
-    internal class Program
+    public class Program
     {
         static void Main(string[] args)
         {
@@ -30,8 +30,7 @@ namespace KiwiBankomaten
                     case "1":
 
                         //Logs in the user
-                        LogIn(out loggedIn, out userKey);
-                        if (loggedIn)
+                        if (Login.LogIn(out userKey))
                         {
                             UserInterface.DisplayWelcomeMessageLoggedIn(userKey);
 
@@ -59,7 +58,7 @@ namespace KiwiBankomaten
 
                     // Hidden admin login, which leads to AdminLogIn() and AdminMenu()
                     case "admin":
-                        AdminLogIn(out loggedIn, out adminKey);
+                        Login.AdminLogIn(out loggedIn, out adminKey);
                         if (loggedIn)
                         {
                             UserInterface.DisplayAdminMessageLoggedIn(adminKey);
@@ -84,84 +83,6 @@ namespace KiwiBankomaten
             } while (loggedIn != true);
         }
 
-        //Checks if user exist, returns userKey
-        public static void LogIn(out bool loggedIn, out int userKey)
-        {
-            userKey = 0;
-            loggedIn = false;
-            Utility.RemoveLines(6);
-            for (int i = 3 - 1; i >= 0; i--)
-            {
-                string userName = UserInterface.QuestionForString("Ange ditt " +
-                    "Användarnamn", "Namn").Trim();
-
-                // loop through customer dictionary to search for userName
-                foreach (KeyValuePair<int, Customer> item in DataBase.CustomerDict)
-                {
-                    if (userName == item.Value.UserName)
-                    {
-                        // stores userKey
-                        userKey = item.Key;
-
-                        // calls CheckPassWord function to check password
-                        loggedIn = Utility.CheckPassWord(userKey);
-
-                        // if login is successful
-                        if (loggedIn) { return; }
-                    }
-                }
-                if (!(i <= 0))
-                {
-                    UserInterface.CurrentMethodRed($"Fel Användarnamn. Du har nu {i} försök kvar, vänligen försök igen");
-                    Utility.PressEnterToContinue();
-                    Utility.RemoveLines(8);
-                }
-                else
-                {
-                    UserInterface.CurrentMethodRed("Fel Användarnamn. Ingen användare med det namnet hittades.");
-                    Utility.PressEnterToContinue();
-                }
-            }
-        }
-
-        public static void AdminLogIn(out bool loggedIn, out int adminKey)
-        {
-            adminKey = 0;
-            loggedIn = false;
-            Utility.RemoveLines(6);
-            UserInterface.DisplayAdminMessage();
-
-            for (int i = 3 - 1; i >= 0; i--)
-            {
-                string userName = UserInterface.QuestionForString("Ange ditt " +
-                    "Användarnamn", "Namn").Trim();
-
-                // loop through customer dictionary to search for userName
-                foreach (Admin item in DataBase.AdminList)
-                {
-                    if (userName == item.UserName)
-                    {
-                        adminKey = DataBase.AdminList.FindIndex(item =>
-                            userName == item.UserName);
-
-                        loggedIn = Utility.CheckAdminPassWord(adminKey);
-
-                        if (loggedIn) { return; }
-                    }
-                }
-                if (!(i <= 0))
-                {
-                    UserInterface.CurrentMethodRed($"Fel Användarnamn. Du har nu {i} försök kvar, vänligen försök igen");
-                    Utility.PressEnterToContinue();
-                    Utility.RemoveLines(8);
-                }
-                else
-                {
-                    UserInterface.CurrentMethodRed("Fel Användarnamn. Ingen användare med det namnet hittades.");
-                    Utility.PressEnterToContinue();
-                }
-            }
-        }
         public static void LogOut()
         {
             // Makes the program go back to the log in menu

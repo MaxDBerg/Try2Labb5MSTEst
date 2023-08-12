@@ -2,7 +2,7 @@
 
 namespace KiwiBankomaten
 {
-    internal abstract class User
+    public abstract class User
     {
 
         private string _userName;

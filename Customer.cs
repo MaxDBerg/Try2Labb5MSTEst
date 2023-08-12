@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace KiwiBankomaten
 {
-    internal class Customer : User
+    public class Customer : User
     {
-        internal Dictionary<int, BankAccount> BankAccounts;
-        internal Dictionary<int, LoanAccount> LoanAccounts;
+        public Dictionary<int, BankAccount> BankAccounts;
+        public Dictionary<int, LoanAccount> LoanAccounts;
 
         // Used for creating test customers.
         public Customer(int id, string username, string password, bool locked)
@@ -62,14 +63,36 @@ namespace KiwiBankomaten
             string accountName = ChooseAccountName();
             // Gets currency choice from Customer
             string currency = ChooseCurrency();
-            // Gets the highest key present and adds one to get new key
-            int index = BankAccounts.Keys.Max() + 1;
             // Adds the new account to customers account dictionary
-            BankAccounts.Add(index, new BankAccount(accountName, currency, interest));
+            AddAccount(accountName, currency, interest);
             // Asks user if they want to put money into new account, if yes money is created in account.
             InsertMoneyIntoNewAccount(interest);
         }
+        public void AddAccount(string accountName, string currency, decimal interest)
+        {
+            int index = BankAccounts.Keys.Max() + 1;
+            BankAccounts.Add(index, new BankAccount(accountName, currency, interest));
 
+        }
+        public bool HasAccount(string accountName)
+        {
+            // Iterate through the customer's accounts and check if the specified account number exists
+            foreach (var account in BankAccounts)
+            {
+                if (account.Value.AccountName == accountName)
+                {
+                    return true;
+                }
+            }
+
+            // Account not found
+            return false;
+        }
+        public static BankAccount GetAccount(int customerId, int accountNumber)
+        {
+            DataBase.CustomerDict[customerId].BankAccounts.TryGetValue(accountNumber, out BankAccount account);
+            return account;
+        }
         // Lets the customer choose what type of account to open.
         public decimal ChooseAccountType()
         {
@@ -389,7 +412,7 @@ namespace KiwiBankomaten
         }
 
         // Method for transferring money with currency exchange.
-        public void TransferMoney(int toAccountNum,
+        public static void TransferMoney(int toAccountNum,
             int fromAccountNum, decimal amountMoney)
         {
             decimal toRate = 1;
@@ -444,9 +467,6 @@ namespace KiwiBankomaten
                     }
                 }
             }
-            UserInterface.CurrentMethodGreen("Överföringen lyckades.");
-            Utility.PressEnterToContinue();
-            Utility.RemoveLinesVariable(11, BankAccounts.Count - 1);
         }
 
         public void InternalMoneyTransfer()

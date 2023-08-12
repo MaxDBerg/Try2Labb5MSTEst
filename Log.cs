@@ -5,7 +5,7 @@ using System.Text;
 
 namespace KiwiBankomaten
 {
-    internal class Log
+    public class Log
     {
         public DateTime TimeOfTransfer { get; set; }
         public decimal AmountTransferred { get; set; }

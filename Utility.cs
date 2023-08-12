@@ -2,83 +2,9 @@
 
 namespace KiwiBankomaten
 {
-    internal class Utility
+    public class Utility
     {
-        public static bool CheckPassWord(int userKey)
-        {
-            //if the user is locked, message is displayed and user is returned to mainmenu
-
-            for (int i = 3 - 1; i >= 0; i--)
-            {
-                CheckPassWordLimit(userKey, i);
-
-                if (UserInterface.QuestionForString("Ange ditt Lösenord", "Lösenord") == DataBase.CustomerDict[userKey].Password)
-                {
-                    UserInterface.CurrentMethodGreen("Rätt Lösenord. Du loggas nu in");
-                    return true;
-                }
-                else
-                {
-                    if (!(i == 0))
-                    {
-                        UserInterface.CurrentMethodRed($"Fel lösenord, du har nu {i} försök kvar. Försök igen");
-                        PressEnterToContinue();
-                        RemoveLines(8);
-                    }
-                    else
-                    {
-                        CheckPassWordLimit(userKey, i - 1);
-                    }
-                }
-            }
-            return false;
-        }
-
-        public static bool CheckAdminPassWord(int adminKey)
-        {
-            //if the user is locked, message is displayed and user is returned to mainmenu
-
-            for (int i = 3 - 1; i >= 0; i--)
-            {
-
-                if (UserInterface.QuestionForString("Ange ditt Lösenord", "Lösenord") == DataBase.AdminList[adminKey].Password)
-                {
-                    UserInterface.CurrentMethodGreen("Rätt Lösenord. Du loggas nu in");
-                    return true;
-                }
-                else
-                {
-                    if (!(i == 0))
-                    {
-                        UserInterface.CurrentMethodRed($"Fel Lösenord. Du har nu {i} försök kvar, vänligen försök igen");
-                        Utility.PressEnterToContinue();
-                        Utility.RemoveLines(8);
-                    }
-                    else
-                    {
-                        UserInterface.CurrentMethodRed("Fel Lösenord. Ingen användare med det lösenordet hittades.");
-                        Utility.PressEnterToContinue();
-                    }
-                }
-            }
-            Program.RunProgram();
-            return false;
-        }
-
-        public static void CheckPassWordLimit(int userKey, int tries)
-        {
-            //if the user is locked, message is displayed and user is returned to mainmenu
-            if (tries < 0 || DataBase.CustomerDict[userKey].Locked == true)
-            {
-                DataBase.CustomerDict[userKey].Locked = true;//locks user if 3 fails occur
-
-                UserInterface.CurrentMethodRed("Du har angett fel lösenord 3 gånger, ditt konto är låst. Kontakta admin");
-
-                PressEnterToContinue();
-
-                Program.RunProgram();
-            }
-        }
+        
 
         //Method to separete commas in amount
         public static string AmountDecimal(decimal valueDec)

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace KiwiBankomaten
 {
-    class DataBase
+    public class DataBase
     {
         // Dictionary for saving users, with 6 test users created.
         public static Dictionary<int, Customer> CustomerDict =
