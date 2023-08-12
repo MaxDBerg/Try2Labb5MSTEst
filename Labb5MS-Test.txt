@@ -1,0 +1,13 @@
+Things to test with MS-Test
+
+- Transfering Money
+	- Wrong amount sent
+	- Money withdrawn from source but not added to recipient
+
+- Creating New Account
+	- Account not being added to database
+	- Wrong Account type being selected
+
+- Login
+	- Can't login even with correct password
+	- Not giving you the correct amount of tries to login
